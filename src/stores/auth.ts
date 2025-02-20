@@ -63,21 +63,23 @@ export const useAuthStore = defineStore('auth', () => {
       loading.value = true
       error.value = ''
 
-      const response = await axios.post('/auth/login/', {
-        username: usernameInput,
-        password
-      })
-      const { access_token, refresh_token, role, user } = response.data
-      // const { access_token, refresh_token, role, user } = { 
-      //   access_token: "access_token", 
-      //   refresh_token: "refresh_token", 
-      //   role: "admin", 
-      //   user: { 
-      //     tier: "tier", 
-      //     has_paid: true, 
-      //     renewal_date: "" 
-      //   } 
-      // };
+      // const response = await axios.post('/auth/login/', {
+      //   username: usernameInput,
+      //   password
+      // })
+      // const { access_token, refresh_token, role, user } = response.data
+      const { access_token, refresh_token, role, user } = { 
+        access_token: "access_token", 
+        refresh_token: "refresh_token", 
+        role: "adminno", 
+        // role: "admin", 
+        user: { 
+          tier: "tier", 
+          has_paid: true, 
+          renewal_date: "",
+          avatar_url: "" 
+        } 
+      };
       
       token.value = access_token
       userRole.value = role
