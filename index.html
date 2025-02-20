@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="vueleaf" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Track your cannabis brand across forums, analyze customer sentiment, and manage reviews from one dashboard. Get insights, protect your reputation, and grow your brand." />
+    <title>VueLeaf - Smart Cannabis Brand Monitoring & Analytics Platform</title>
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="%VITE_APP_URL%" />
+    <meta property="og:title" content="VueLeaf - Smart Cannabis Brand Monitoring & Analytics Platform" />
+    <meta property="og:description" content="Track your cannabis brand across forums, analyze customer sentiment, and manage reviews from one dashboard. Get insights, protect your reputation, and grow your brand." />
+    <meta property="og:image" content="%VITE_APP_URL%/social-preview.png" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="%VITE_APP_URL%" />
+    <meta property="twitter:title" content="VueLeaf - Smart Cannabis Brand Monitoring & Analytics Platform" />
+    <meta property="twitter:description" content="Track your cannabis brand across forums, analyze customer sentiment, and manage reviews from one dashboard. Get insights, protect your reputation, and grow your brand." />
+    <meta property="twitter:image" content="%VITE_APP_URL%/social-preview.png" />
+    
+    <!-- OneSignal SDK -->
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <script>
+      window.OneSignalDeferred = window.OneSignalDeferred || [];
+      window.OneSignalDeferred.push(async function(OneSignal) {
+        try {
+          console.log('Starting OneSignal initialization...');
+          
+          await OneSignal.init({
+            appId: "%VITE_ONESIGNAL_APP_ID%",
+            serviceWorkerPath: "/OneSignalSDKWorker.js"
+          });
+        } catch (error) {
+          console.error('OneSignal initialization failed:', error);
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
