@@ -250,32 +250,25 @@ const getKeywordTrend = (keyword: KeywordDataPoint): 'up' | 'down' | 'stable' =>
 </script>
 
 <template>
-  <div class="flex-1 md:p-6 p-2">
+  <div class="flex-1 p-2 md:p-6">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 md:py-8">
-      <!-- Welcome Section -->
-      <div class="mb-8 bg-white rounded-lg shadow-sm p-4 sm:p-6 md:p-8">
+
+      <div class="mb-8 bg-white rounded-lg shadow-sm p-4 sm:p-6">
         <div class="flex flex-col md:flex-row items-center gap-6">
-          <!-- Text Content -->
-          <div class="flex-1 text-center md:text-start">
-            <h1 class="text-lg sm:text-xl md:text-2xl font-medium text-green-800 mb-2 text-center md:text-left">
+          <div class="flex-1 text-center md:text-left">
+            <h1 class="text-lg md:text-2xl font-medium text-green-800 mb-2 text-center md:text-left">
               Hey {{ authStore.username }}
             </h1>
-            <p class="text-gray-600 text-sm sm:text-md md:text-lg leading-relaxed">
+            <p class="text-gray-600 text-sm sm:text-md md:text-lg">
               Welcome to your dashboard! Get ready to dive into your brand's impact and presence across the growing
-              community.
-              We've gathered insights from top cannabis platforms to show you what people are saying about your brand.
-              Explore
-              your sentiment trends, engagement stats, and opportunities to strengthen your reputation. Every insight
-              here is
-              designed to help you connect with your audience and grow your brand's story. Ready to see what's driving
-              the buzz?
+              community. We've gathered insights from top cannabis platforms to show you what people are saying about your brand.
+              Explore your sentiment trends, engagement stats, and opportunities to strengthen your reputation. Every insight
+              here is designed to help you connect with your audience and grow your brand's story. Ready to see what's driving the buzz?
               Let's get started!
             </p>
           </div>
-
-          <!-- Image -->
           <div class="w-full max-w-xs sm:max-w-sm md:w-48 md:h-48 flex-shrink-0 relative">
-            <img :src="analyticsImage" alt="Dashboard illustration" class="w-full h-full object-contain" />
+            <img :src="analyticsImage" alt="Brand Mentions illustration" class="w-full h-full object-contain" />
           </div>
         </div>
       </div>
