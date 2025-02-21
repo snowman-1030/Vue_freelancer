@@ -5,7 +5,7 @@
       <div
         v-for="site in sites"
         :key="site.id"
-        class="flex items-center space-x-3 bg-gray-50 px-4 py-3 rounded-sm transition-colors hover:bg-gray-100 border border-gray-200 cursor-pointer"
+        class="flex items-center space-x-3 bg-gray-50 px-1 sm:px-4 py-3 rounded-sm transition-colors hover:bg-gray-100 border border-gray-200 cursor-pointer"
         @click="toggleSite(site.id, !modelValue.includes(site.id))"
       >
         <Checkbox 
@@ -14,14 +14,14 @@
         />
         <Label 
           :for="site.id" 
-          class="flex items-center space-x-2.5 text-base text-gray-700 cursor-pointer select-none"
+          class="flex items-center space-x-0 md:space-x-2.5 text-base text-gray-700 cursor-pointer select-none flex-col md:flex-row justify-center grow md:justify-start "
         >
           <component 
             :is="getSiteIcon(site.id)" 
-            class="min-h-3 min-w-3 max-h-3 max-w-3"
+            class="h-3 min-3 "
             :class="site.iconColor"
           />
-          <p class="text-[clamp(0.5rem,2vw,1rem)]">{{ site.name }}</p>
+          <p class="text-[clamp(0.7rem,2vw,1rem)] text-center md:text-start">{{ site.name }}</p>
         </Label>
       </div>
     </div>
