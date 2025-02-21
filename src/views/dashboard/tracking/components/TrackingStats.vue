@@ -1,5 +1,5 @@
 <template>
-  <div class="grid grid-cols-2 grid-rows-2 gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8">
+  <div class="grid grid-cols-2 sm:grid-rows-1 grid-rows-2 gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8">
     <!-- Loading State -->
     <template v-if="store.isLoading">
       <div v-for="i in 4" :key="i" class="transform transition-all duration-200">
@@ -59,8 +59,8 @@
               <p :class="
                 stat.title === 'Total Keywords' ? 'mt-2 text-sm text-blue-700/80' :
                 stat.title === 'Active Keywords' ? 'mt-2 text-sm text-emerald-700/80' :
-                stat.title === 'Total Mentions' ? 'mt-2 text-sm text-amber-700/80' :
-                'mt-2 text-sm text-indigo-700/80'
+                stat.title === 'Total Mentions' ? 'mt-2  text-sm text-amber-700/80' :
+                'mt-2 text-[10px] sm:text-sm text-indigo-700/80'
               ">
                 {{ stat.subtext }}
               </p>
@@ -68,7 +68,7 @@
             <div v-if="stat.title === 'Keyword Limit'" class="mt-2 mb-4 relative z-10">
               <div class="h-1.5 w-full rounded-full bg-gray-200">
                 <div
-                  class="h-1.5 rounded-full bg-indigo-700 transition-all duration-200"
+                  class="h-1.5 rounded-full bg-indigo-700 mt-[26px] sm:mt-[0px] transition-all duration-200"
                   :style="{ width: `${progressValue}%` }"
                 />
               </div>

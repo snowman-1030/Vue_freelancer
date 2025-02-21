@@ -294,7 +294,7 @@ const getKeywordTrend = (keyword: KeywordDataPoint): 'up' | 'down' | 'stable' =>
         </Card>
 
         <!-- Responsive Grid Container -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="grid grid-cols-2 grid-rows-2 sm:grid-rows-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <!-- Sentiment Card -->
           <Card
             class="shadow-sm hover:shadow-md transition-all duration-200 border border-blue-500/10 bg-gradient-to-br from-blue-100/60 to-indigo-100/60">

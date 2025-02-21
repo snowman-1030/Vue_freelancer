@@ -2,10 +2,10 @@
   <div class="flex-1 p-2 md:p-6">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 md:py-8">
       <!-- Welcome Section -->
-      <div class="mb-8 bg-white rounded-lg shadow-sm p-6">
+      <div class="mb-8 bg-white rounded-lg shadow-sm p-4 sm:p-6 md:p-8">
         <div class="flex flex-col md:flex-row justify-between items-start">
           <div class="flex-1 text-center md:text-left">
-            <h1 class="text-lg md:text-2xl font-medium text-green-800 mb-2 text-center md:textr-left">
+            <h1 class="text-lg md:text-2xl font-medium text-green-800 mb-2 text-center md:text-left">
               Keyword Tracking
             </h1>
             <p class="text-gray-600 text-sm sm:text-md md:text-lg">
