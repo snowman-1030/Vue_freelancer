@@ -82,29 +82,28 @@ onMounted(() => {
 
     <!-- Hero Section -->
     <div class="bg-green-50">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 pb-28">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 md:py-24 md:pb-28 py-10 pb-10">
         <div class="grid md:grid-cols-2 gap-12 items-center">
-          <div class="text-left">
-            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-green-900 mb-6 leading-tight tracking-tight">
+          <div class="md:text-left  text-center">
+            <h1 class="text-3xl md:text-5xl lg:text-6xl font-bold text-green-900 mb-6 leading-tight tracking-tight">
               Elevate Your <br class="hidden sm:inline" />
               Cannabis Brand <br class="hidden sm:inline" />
               Protection
             </h1>
-            <p class="text-lg md:text-xl text-gray-700 mb-8 max-w-2xl">
-              Harness the power of AI-driven insights to protect and grow your reputation in the dynamic cannabis market.
+            <p class="text-md md:text-xl text-gray-700 mb-8 max-w-2xl text-center md:text-start">
+              Harness the power of AI-driven insights to protect and grow your reputation in the dynamic cannabis
+              market.
             </p>
-            <Button class="bg-yellow-400 text-yellow-900 px-8 py-6 min-h-[4rem] rounded-md text-lg md:text-xl font-semibold hover:bg-yellow-500 transition-colors">
+            <Button
+              class="bg-yellow-400 text-yellow-900 md:px-8 md:py-6 min-h-[4rem] rounded-md text-md md:text-xl font-semibold hover:bg-yellow-500 transition-colors px-4 py-3">
               Get Protected
             </Button>
           </div>
           <div class="flex justify-center">
             <div class="relative">
               <div class="absolute inset-0 bg-green-200 rounded-full filter blur-3xl opacity-50"></div>
-              <img
-                src="/src/assets/images/features/growth.png"
-                alt="Brand Growth Illustration"
-                class="h-auto max-w-full mx-auto relative z-10"
-              />
+              <img src="/src/assets/images/features/growth.png" alt="Brand Growth Illustration"
+                class="h-auto max-w-full mx-auto relative z-10" />
             </div>
           </div>
         </div>
@@ -112,44 +111,47 @@ onMounted(() => {
     </div>
 
     <!-- Features Section -->
-    <section class="py-24 bg-white">
+    <section class="md:py-24 bg-white py-10">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-          <div class="flex flex-col items-center mb-8">
-            <div class="w-16 h-1 bg-green-500 mb-6"></div>
-            <h2 class="text-4xl font-bold text-green-800 mb-4">
+        <div class=" mb-16">
+          <div class="flex flex-col  mb-8">
+            <div class="flex items-center justify-center mx-auto md:mx-0">
+              <div class="w-16 h-1  bg-green-500 mb-6"></div>
+            </div>
+            <h2 class="md:text-4xl font-bold text-green-800 mb-4 text-3xl text-center">
               Your Brand's Digital Guardian
             </h2>
-            <p class="text-xl text-gray-700 max-w-2xl mx-auto">
+            <p class="md:text-xl text-gray-700 text-md text-center">
               Complete visibility and control over your online presence
             </p>
           </div>
         </div>
         <div class="grid md:grid-cols-2 gap-8">
-          <Card v-for="(feature, index) in features" :key="index" class="overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+          <Card v-for="(feature, index) in features" :key="index"
+            class="overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
             <div class="p-0">
               <div class="flex items-stretch">
                 <div :class="[
                   'w-2',
                   index === 0 ? 'bg-yellow-500' :
-                  index === 1 ? 'bg-blue-500' :
-                  index === 2 ? 'bg-purple-500' :
-                  'bg-green-500'
+                    index === 1 ? 'bg-blue-500' :
+                      index === 2 ? 'bg-purple-500' :
+                        'bg-green-500'
                 ]"></div>
                 <div class="flex-grow p-6">
                   <div class="flex items-center mb-4">
                     <div :class="[
                       'rounded-full p-3 mr-4',
                       index === 0 ? 'bg-yellow-100 text-yellow-500' :
-                      index === 1 ? 'bg-blue-100 text-blue-500' :
-                      index === 2 ? 'bg-purple-100 text-purple-500' :
-                      'bg-green-100 text-green-500'
+                        index === 1 ? 'bg-blue-100 text-blue-500' :
+                          index === 2 ? 'bg-purple-100 text-purple-500' :
+                            'bg-green-100 text-green-500'
                     ]">
-                      <component :is="feature.icon" class="h-6 w-6" />
+                      <component :is="feature.icon" class="sm:h-6 sm:w-6 h-5 w-5" />
                     </div>
-                    <h3 class="text-xl font-semibold text-green-800">{{ feature.title }}</h3>
+                    <h3 class="sm:text-xl font-semibold text-green-800 text-md">{{ feature.title }}</h3>
                   </div>
-                  <p class="text-gray-600">{{ feature.description }}</p>
+                  <p class="text-gray-600 text-center">{{ feature.description }}</p>
                 </div>
               </div>
             </div>
@@ -159,42 +161,43 @@ onMounted(() => {
     </section>
 
     <!-- Dashboard Screenshots Section -->
-    <section class="py-24 bg-gradient-to-b from-green-50 to-white">
+    <section class="md:py-24 bg-gradient-to-b from-green-50 to-white py-10">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-          <div class="flex flex-col items-center mb-8">
-            <div class="w-16 h-1 bg-green-500 mb-6"></div>
-            <h2 class="text-4xl font-bold text-green-800 mb-6">
+        <div class=" mb-16">
+          <div class="flex flex-col  mb-8">
+            <!-- <div class="w-16 h-1 bg-green-500 mb-6"></div> -->
+            <div class="flex items-center justify-center mx-auto md:mx-0">
+              <div class="w-16 h-1  bg-green-500 mb-6"></div>
+            </div>
+            <h2 class="md:text-4xl font-bold text-green-800 md:mb-6 text-3xl mb-0 text-center ">
               Comprehensive Monitoring Tools
             </h2>
           </div>
-          <p class="text-xl text-gray-700 mb-12">
+          <p class="md:text-xl text-gray-700 md:mb-12 mb-8 text-md text-center ">
             Stay on top of your online presence with our powerful tracking and analysis tools.
           </p>
         </div>
-        
+
         <!-- Dashboard Images -->
-        <div class="relative w-full h-[400px] md:h-[600px] overflow-hidden rounded-lg shadow-lg">
-          <img
-            v-for="(src, index) in images"
-            :key="src"
-            :src="src"
-            :alt="`Dashboard ${index + 1}`"
-            class="absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-1000"
-            :class="index === currentImage ? 'opacity-100' : 'opacity-0'"
-          />
+        <div class="relative w-full sm:h-[400px] md:h-[600px] overflow-hidden rounded-lg shadow-lg h-[300px]">
+          <img v-for="(src, index) in images" :key="src" :src="src" :alt="`Dashboard ${index + 1}`"
+            class="absolute top-0 left-0 w-full h-full md:object-cover transition-opacity duration-1000 object-fit"
+            :class="index === currentImage ? 'opacity-100' : 'opacity-0'" />
         </div>
 
         <!-- Analytics Section -->
         <div class="mt-24">
           <div class="grid md:grid-cols-5 gap-12 items-center">
             <div class="md:col-span-3">
-              <div class="flex flex-col items-start mb-8">
-                <div class="w-16 h-1 bg-green-500 mb-6"></div>
-                <h3 class="text-3xl font-bold text-green-800 mb-6">
+              <div class="flex flex-col text-center md:text-start mb-8">
+                <!-- <div class="w-16 h-1 bg-green-500 mb-6"></div> -->
+                <div class="flex items-center justify-start mx-auto md:mx-0">
+                  <div class="w-16 h-1  bg-green-500 mb-6"></div>
+                </div>
+                <h3 class="text-3xl font-bold text-green-800 mb-6 text-center md:text-start">
                   Smart Cannabis Analytics
                 </h3>
-                <p class="text-xl text-gray-700 mb-8">
+                <p class="md:text-xl text-gray-700 mb-8 text-md text-center md:text-start">
                   Get deep visibility into your brand's performance with our comprehensive tracking tools.
                 </p>
               </div>
@@ -205,7 +208,8 @@ onMounted(() => {
                   </div>
                   <div>
                     <h4 class="text-lg font-semibold text-green-800 mb-2">Real-time brand monitoring</h4>
-                    <p class="text-gray-600">Track customer feedback and brand mentions across all major cannabis platforms</p>
+                    <p class="text-gray-600 text-start">Track customer feedback and brand mentions across all major
+                      cannabis platforms</p>
                   </div>
                 </li>
                 <li class="flex items-start">
@@ -214,7 +218,8 @@ onMounted(() => {
                   </div>
                   <div>
                     <h4 class="text-lg font-semibold text-green-800 mb-2">Performance benchmarking</h4>
-                    <p class="text-gray-600">Compare your metrics against top cannabis brands in your market</p>
+                    <p class="text-gray-600 text-start">Compare your metrics against top cannabis brands in your market
+                    </p>
                   </div>
                 </li>
                 <li class="flex items-start">
@@ -223,17 +228,14 @@ onMounted(() => {
                   </div>
                   <div>
                     <h4 class="text-lg font-semibold text-green-800 mb-2">Data intelligence</h4>
-                    <p class="text-gray-600">Transform cannabis market data into strategic advantages</p>
+                    <p class="text-gray-600 text-start">Transform cannabis market data into strategic advantages</p>
                   </div>
                 </li>
               </ul>
             </div>
             <div class="md:col-span-2 flex justify-center">
-              <img
-                src="/src/assets/images/features/analytics.png"
-                alt="Analytics Dashboard Illustration"
-                class="max-w-md w-full"
-              />
+              <img src="/src/assets/images/features/analytics.png" alt="Analytics Dashboard Illustration"
+                class="max-w-md w-full" />
             </div>
           </div>
         </div>
@@ -241,42 +243,46 @@ onMounted(() => {
     </section>
 
     <!-- Intelligent Brand Monitoring Section -->
-    <section class="py-24 bg-white">
+    <section class="md:py-24 bg-white py-10">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-          <div class="flex flex-col items-center mb-8">
-            <div class="w-16 h-1 bg-green-500 mb-6"></div>
-            <h2 class="text-4xl font-bold text-green-800 mb-6">
+        <div class="mb-16">
+          <div class="flex flex-col mb-8">
+            <div class="flex items-center justify-center mx-auto md:mx-0">
+              <div class="w-16 h-1  bg-green-500 mb-6"></div>
+            </div>
+            <h2 class="md:text-4xl font-bold text-green-800 mb-6 text-3xl text-center">
               Industry-Leading Brand Intelligence
             </h2>
           </div>
-          <p class="text-xl text-center text-gray-700 mb-16 max-w-3xl mx-auto">
-            Your brand never sleeps, and neither does our AI. We understand cannabis conversations like no other platform can.
+          <p class="md:text-xl text-center text-gray-700 mb-16 text-md ">
+            Your brand never sleeps, and neither does our AI. We understand cannabis conversations like no other
+            platform can.
           </p>
         </div>
         <div class="grid md:grid-cols-3 gap-8">
-          <Card v-for="(feature, index) in intelligentMonitoringFeatures" :key="index" class="overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+          <Card v-for="(feature, index) in intelligentMonitoringFeatures" :key="index"
+            class="overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
             <div class="p-0">
               <div class="flex items-stretch h-full">
                 <div :class="[
                   'w-2',
                   index === 0 ? 'bg-green-500' :
-                  index === 1 ? 'bg-blue-500' :
-                  'bg-purple-500'
+                    index === 1 ? 'bg-blue-500' :
+                      'bg-purple-500'
                 ]"></div>
                 <div class="flex-grow p-6">
                   <div class="flex flex-col items-center mb-4">
                     <div :class="[
                       'rounded-full p-4 mb-4',
                       index === 0 ? 'bg-green-100 text-green-500' :
-                      index === 1 ? 'bg-blue-100 text-blue-500' :
-                      'bg-purple-100 text-purple-500'
+                        index === 1 ? 'bg-blue-100 text-blue-500' :
+                          'bg-purple-100 text-purple-500'
                     ]">
                       <component :is="feature.icon" class="h-8 w-8" />
                     </div>
                     <h3 class="text-xl font-semibold text-center text-green-800 mb-2">{{ feature.title }}</h3>
                   </div>
-                  <p class="text-gray-600 text-center">{{ feature.description }}</p>
+                  <p class="text-gray-600 md:text-center text-center">{{ feature.description }}</p>
                 </div>
               </div>
             </div>

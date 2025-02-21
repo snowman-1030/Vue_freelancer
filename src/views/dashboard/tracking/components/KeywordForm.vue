@@ -29,8 +29,8 @@
               <div class="flex flex-col space-y-6">
                 <div class="flex items-center gap-8">
                   <div class="flex-1">
-                    <DialogTitle class="text-2xl font-bold text-green-800 mb-4">Upgrade Your Experience</DialogTitle>
-                    <p class="text-lg text-gray-600">
+                    <DialogTitle class="md:text-2xl text-lg font-bold text-green-800 mb-4">Upgrade Your Experience</DialogTitle>
+                    <p class="md:text-lg text-gray-600 text-md">
                       Ready to unlock more tracking power? Upgrade your plan to start monitoring more keywords and get deeper insights into your brand's presence. Our premium features are just a click away! 🚀
                     </p>
                   </div>
@@ -61,12 +61,12 @@
   <Card class="mb-8 bg-white shadow-sm">
     <CardHeader>
       <div class="flex items-center gap-3 mb-2">
-        <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-gray-100">
-          <Plus class="w-5 h-5 text-gray-500" />
+        <div class="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100">
+          <Plus class="w-10 h-5 text-gray-500" />
         </div>
         <div>
-          <CardTitle class="text-lg font-medium text-gray-700">Add New Keyword</CardTitle>
-          <p class="text-base text-gray-500">Enter a new keyword or phrase and select sites to track across platforms</p>
+          <CardTitle class="md:text-lg font-medium text-gray-700 text-md">Add New Keyword</CardTitle>
+          <p class="text-sm sm:text-base text-gray-500 text-left">Enter a new keyword or phrase and select sites to track across platforms</p>
         </div>
       </div>
     </CardHeader>

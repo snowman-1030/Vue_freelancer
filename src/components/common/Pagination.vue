@@ -41,7 +41,7 @@ function changePage(page: number) {
     <!-- Middle pages -->
     <template v-for="page in totalPages" :key="page">
       <button
-        v-if="page !== 1 && page !== totalPages && Math.abs(currentPage - page) <= 2"
+        v-if="page !== 1 && page !== totalPages && Math.abs(currentPage - page) <= 1"
         class="flex items-center justify-center h-10 min-w-[40px] px-2 rounded text-base transition-colors"
         :class="page === currentPage 
           ? 'bg-emerald-100 text-emerald-700 font-medium' 

@@ -13,7 +13,7 @@ import { RouterLink } from 'vue-router'
             <Shield class="h-8 w-8 text-green-600" />
             <span class="ml-2 text-2xl font-bold text-green-800">Vueleaf</span>
           </div>
-          <p class="text-md md:text-lg text-gray-600 mb-4">
+          <p class="text-md md:text-lg text-gray-600 mb-4 text-center">
             Protecting and growing cannabis brands through intelligent review management.
           </p>
           <div class=" text-md md:text-lg flex justify-center sm:justify-start space-x-4">

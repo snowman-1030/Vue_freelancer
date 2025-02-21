@@ -18,10 +18,10 @@
         >
           <component 
             :is="getSiteIcon(site.id)" 
-            class="h-5 w-5"
+            class="min-h-3 min-w-3 max-h-3 max-w-3"
             :class="site.iconColor"
           />
-          <span>{{ site.name }}</span>
+          <p class="text-[clamp(0.5rem,2vw,1rem)]">{{ site.name }}</p>
         </Label>
       </div>
     </div>
@@ -48,6 +48,110 @@ const sites = ref<Array<{id: string, name: string, icon: string, iconColor: stri
 onMounted(async () => {
   try {
     const response = await axios.get('/logs/available-sources/')
+    response.data = [
+      {
+          "id": "rollitup.org",
+          "name": "RollitUp",
+          "icon": "Leaf",
+          "iconColor": "text-green-600"
+      },
+      {
+          "id": "thcfarmer.com",
+          "name": "THC Farmer",
+          "icon": "Leaf",
+          "iconColor": "text-green-600"
+      },
+      {
+          "id": "icmag.com",
+          "name": "ICMag",
+          "icon": "Leaf",
+          "iconColor": "text-green-600"
+      },
+      {
+          "id": "420magazine.com",
+          "name": "420 Magazine",
+          "icon": "Leaf",
+          "iconColor": "text-green-600"
+      },
+      {
+          "id": "overgrow.com",
+          "name": "Overgrow",
+          "icon": "Leaf",
+          "iconColor": "text-green-600"
+      },
+      {
+          "id": "ilgmforum.com",
+          "name": "ILGM Forum",
+          "icon": "Leaf",
+          "iconColor": "text-green-600"
+      },
+      {
+          "id": "homegrowncannabisco.community",
+          "name": "Homegrown Cannabis Co",
+          "icon": "Leaf",
+          "iconColor": "text-green-600"
+      },
+      {
+          "id": "growersnetwork.org",
+          "name": "Growers Network",
+          "icon": "Leaf",
+          "iconColor": "text-green-600"
+      },
+      {
+          "id": "reddit.com",
+          "name": "Reddit",
+          "icon": "Leaf",
+          "iconColor": "text-green-600"
+      },
+      {
+          "id": "autoflower.org",
+          "name": "AutoFlower",
+          "icon": "Leaf",
+          "iconColor": "text-green-600"
+      },
+      {
+          "id": "marijuanapassion.com",
+          "name": "Marijuana Passion",
+          "icon": "Leaf",
+          "iconColor": "text-green-600"
+      },
+      {
+          "id": "growweedeasy.com",
+          "name": "GrowWeedEasy",
+          "icon": "Leaf",
+          "iconColor": "text-green-600"
+      },
+      {
+          "id": "phenohunter.org",
+          "name": "PhenoHunter",
+          "icon": "Leaf",
+          "iconColor": "text-green-600"
+      },
+      {
+          "id": "beanbasement.nl",
+          "name": "Bean Basement",
+          "icon": "Leaf",
+          "iconColor": "text-green-600"
+      },
+      {
+          "id": "uk420.com",
+          "name": "UK420",
+          "icon": "Leaf",
+          "iconColor": "text-green-600"
+      },
+      {
+          "id": "percysgrowroom.com",
+          "name": "Percy's Grow Room",
+          "icon": "Leaf",
+          "iconColor": "text-green-600"
+      },
+      {
+          "id": "420sa.co.za",
+          "name": "420SA",
+          "icon": "Leaf",
+          "iconColor": "text-green-600"
+      }
+    ]
     // Sort sites alphabetically by name
     sites.value = response.data.sort((a: {name: string}, b: {name: string}) =>
       a.name.localeCompare(b.name)

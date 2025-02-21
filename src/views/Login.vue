@@ -2,7 +2,7 @@
 import { ref, reactive } from 'vue'
 import { Eye, EyeOff, AlertCircle, Lock, Leaf } from 'lucide-vue-next'
 import { useAuthStore } from '../stores/auth'
-import { RouterLink } from 'vue-router'
+import { RouterLink ,useRouter} from 'vue-router'
 import Navigation from '../components/home/Navigation.vue'
 import Footer from '../components/home/Footer.vue'
 import { Button } from "@/components/ui/button"
@@ -12,7 +12,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import loginImage from '@/assets/images/auth/login.png'
 
 const authStore = useAuthStore()
-
+const router = useRouter()
 // Types
 interface FormData {
   username: string;
@@ -43,13 +43,14 @@ const handleInputChange = (e: Event) => {
 }
 
 const handleSubmit = async (e: Event) => {
-  
+  // router.push('/features')
   e.preventDefault()
   error.value = ''
   isLoading.value = true
 
   try {
     await authStore.login(formData.username, formData.password)
+   
   } catch (err) {
     error.value = typeof err === 'string' ? err : 'Invalid username or password. Please try again.'
   } finally {

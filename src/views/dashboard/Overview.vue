@@ -139,7 +139,7 @@ async function startRatingCalculation(keywordId: number) {
   // Only start calculation if we don't have a current rating
   if (!analyticsStore.brandRating) {
     const status = await brandRatingService.calculateRating(keywordId)
-    
+
     if (status?.status === 'calculating') {
       startPolling(keywordId)
     }
@@ -149,7 +149,7 @@ async function startRatingCalculation(keywordId: number) {
 function startPolling(keywordId: number) {
   // Clear any existing poll
   stopPolling()
-  
+
   pollState.value.startTime = Date.now()
   pollState.value.intervalId = setInterval(async () => {
     // Check max duration (3 minutes)
@@ -175,7 +175,7 @@ function stopPolling() {
 // 10. Watchers
 watch(() => analyticsStore.keywordAnalysis, async (keywords) => {
   if (!keywords.length || !keywords[0]?.id) return
-  
+
   // Always check rating when keywords change or if current rating doesn't match keyword
   if (!analyticsStore.brandRating || analyticsStore.brandRating.id !== keywords[0].id) {
     await startRatingCalculation(keywords[0].id)
@@ -211,7 +211,7 @@ const getTrendIcon = (trend: 'up' | 'down' | 'stable') => {
 // Calculate dominant sentiment for a keyword using ratios and relative thresholds
 const getDominantSentiment = (keyword: KeywordDataPoint): 'positive' | 'neutral' | 'negative' => {
   const { positive, negative, mentions } = keyword
-  
+
   // Calculate ratios
   const positiveRatio = positive / mentions
   const negativeRatio = negative / mentions
@@ -235,13 +235,13 @@ const getDominantSentiment = (keyword: KeywordDataPoint): 'positive' | 'neutral'
 const getKeywordTrend = (keyword: KeywordDataPoint): 'up' | 'down' | 'stable' => {
   const allKeywords = analyticsStore.keywordAnalysis
   if (!allKeywords || allKeywords.length === 0) return 'stable'
-  
+
   // Find the highest mention count
   const maxMentions = Math.max(...allKeywords.map(k => k.mentions))
-  
+
   // Calculate percentage of max mentions
   const percentage = (keyword.mentions / maxMentions) * 100
-  
+
   // Define thresholds as percentages of max mentions
   if (percentage >= 70) return 'up'        // Above 70% of max = up trend
   if (percentage <= 25) return 'down'      // Below 25% of max = down trend
@@ -250,237 +250,219 @@ const getKeywordTrend = (keyword: KeywordDataPoint): 'up' | 'down' | 'stable' =>
 </script>
 
 <template>
-  <div class="flex-1 p-6">
+  <div class="flex-1 md:p-6 p-2">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <!-- Welcome Section -->
-      <div class="mb-8 bg-white rounded-lg shadow-sm p-6">
+      <div class="mb-8 bg-white rounded-lg shadow-sm p-4 sm:p-6 md:p-8">
         <div class="flex flex-col md:flex-row items-center gap-6">
-          <div class="flex-1">
-            <h1 class="text-xl md:text-2xl font-medium text-green-800 mb-2">
+          <!-- Text Content -->
+          <div class="flex-1 text-center md:text-start">
+            <h1 class="text-lg sm:text-xl md:text-2xl font-medium text-green-800 mb-2 text-center md:text-left">
               Hey {{ authStore.username }}
             </h1>
-            <p class="text-gray-600 text-lg">
-              Welcome to your dashboard! Get ready to dive into your brand's impact and presence across the growing community. We've gathered insights from top cannabis platforms to show you what people are saying about your brand. Explore your sentiment trends, engagement stats, and opportunities to strengthen your reputation. Every insight here is designed to help you connect with your audience and grow your brand's story. Ready to see what's driving the buzz? Let's get started!
+            <p class="text-gray-600 text-sm sm:text-md md:text-lg leading-relaxed">
+              Welcome to your dashboard! Get ready to dive into your brand's impact and presence across the growing
+              community.
+              We've gathered insights from top cannabis platforms to show you what people are saying about your brand.
+              Explore
+              your sentiment trends, engagement stats, and opportunities to strengthen your reputation. Every insight
+              here is
+              designed to help you connect with your audience and grow your brand's story. Ready to see what's driving
+              the buzz?
+              Let's get started!
             </p>
           </div>
-          <div class="w-48 h-48 flex-shrink-0 relative">
-            <img
-              :src="analyticsImage"
-              alt="Dashboard illustration"
-              class="w-full h-full object-contain"
-            />
+
+          <!-- Image -->
+          <div class="w-full max-w-xs sm:max-w-sm md:w-48 md:h-48 flex-shrink-0 relative">
+            <img :src="analyticsImage" alt="Dashboard illustration" class="w-full h-full object-contain" />
           </div>
         </div>
       </div>
 
+
       <!-- Brand Overview -->
       <div class="mb-8">
+        <!-- Brand Overview Card -->
         <Card class="border-0 bg-white mb-4">
-          <div class="p-6 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-              <h2 class="text-lg font-medium text-gray-700">Brand Overview</h2>
-            </div>
-            <div class="flex items-center gap-2">
-              <div class="bg-gray-100 text-sm font-medium text-gray-600 px-3 py-1 rounded-full">
-                {{ dateRangeDisplay }}
-              </div>
+          <div class="p-6 flex flex-col md:flex-row items-center justify-between gap-4">
+            <h2 class="text-md md:text-lg font-medium text-gray-700">Brand Overview</h2>
+            <div class="bg-gray-100 text-sm font-medium text-gray-600 px-3 py-1 rounded-full">
+              {{ dateRangeDisplay }}
             </div>
           </div>
         </Card>
-        <div class="flex gap-6">
+
+        <!-- Responsive Grid Container -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <!-- Sentiment Card -->
-          <Card class="flex-1 shadow-sm hover:shadow-md transition-all duration-200 border border-blue-500/10 bg-gradient-to-br from-blue-100/60 to-indigo-100/60">
+          <Card
+            class="shadow-sm hover:shadow-md transition-all duration-200 border border-blue-500/10 bg-gradient-to-br from-blue-100/60 to-indigo-100/60">
             <div class="p-6">
               <div class="flex items-center justify-between mb-4">
                 <p class="text-sm font-medium text-blue-700">Overall Sentiment</p>
                 <TrendingUp class="h-4 w-4 text-blue-700" />
               </div>
-              <div class="flex flex-col">
-                <div v-if="analyticsStore.scraperStatus" class="flex items-baseline gap-2">
-                  <span class="text-3xl font-bold text-blue-700">{{ analyticsStore.overallStats?.positiveSentiment }}%</span>
-                  <span class="text-sm font-medium text-blue-700">Positive</span>
-                </div>
-                <div v-else class="text-3xl font-bold text-blue-700 animate-pulse">
-                  Loading...
-                </div>
-                <p class="mt-2 text-sm text-blue-700/80">Based on all mentions</p>
+              <div v-if="analyticsStore.scraperStatus" class="flex items-baseline gap-2">
+                <span class="text-3xl font-bold text-blue-700">{{ analyticsStore.overallStats?.positiveSentiment
+                }}%</span>
+                <span class="text-sm font-medium text-blue-700">Positive</span>
               </div>
+              <div v-else class="text-3xl font-bold text-blue-700 animate-pulse">Loading...</div>
+              <p class="mt-2 text-sm text-blue-700/80">Based on all mentions</p>
             </div>
           </Card>
 
           <!-- Total Mentions Card -->
-          <Card class="flex-1 shadow-sm hover:shadow-md transition-all duration-200 border border-teal-500/10 bg-gradient-to-br from-cyan-100/60 to-teal-100/60">
+          <Card
+            class="shadow-sm hover:shadow-md transition-all duration-200 border border-teal-500/10 bg-gradient-to-br from-cyan-100/60 to-teal-100/60">
             <div class="p-6">
               <div class="flex items-center justify-between mb-4">
                 <p class="text-sm font-medium text-teal-700">Total Mentions</p>
                 <MessageCircle class="h-4 w-4 text-teal-700" />
               </div>
-              <div class="flex flex-col">
-                <div class="flex items-baseline gap-2">
-                  <span class="text-3xl font-bold text-teal-700">{{ analyticsStore.overallStats?.totalMentions.toLocaleString() }}</span>
-                </div>
-                <p class="mt-2 text-sm text-teal-700/80">Across all platforms</p>
+              <div class="flex items-baseline gap-2">
+                <span class="text-3xl font-bold text-teal-700">{{
+                  analyticsStore.overallStats?.totalMentions.toLocaleString() }}</span>
               </div>
+              <p class="mt-2 text-sm text-teal-700/80">Across all platforms</p>
             </div>
           </Card>
 
           <!-- Active Keywords Card -->
-          <Card class="flex-1 shadow-sm hover:shadow-md transition-all duration-200 border border-yellow-500/10 bg-gradient-to-br from-yellow-100/60 to-orange-100/60">
+          <Card
+            class="shadow-sm hover:shadow-md transition-all duration-200 border border-yellow-500/10 bg-gradient-to-br from-yellow-100/60 to-orange-100/60">
             <div class="p-6">
               <div class="flex items-center justify-between mb-4">
                 <p class="text-sm font-medium text-yellow-700">Active Keywords</p>
                 <Star class="h-4 w-4 text-yellow-700" />
               </div>
-              <div class="flex flex-col">
-                <div class="flex items-baseline gap-2">
-                  <span class="text-3xl font-bold text-yellow-700">{{ trackingStore.activeKeywords }}</span>
-                </div>
-                <p class="mt-2 text-sm text-yellow-700/80">Being tracked</p>
+              <div class="flex items-baseline gap-2">
+                <span class="text-3xl font-bold text-yellow-700">{{ trackingStore.activeKeywords }}</span>
               </div>
+              <p class="mt-2 text-sm text-yellow-700/80">Being tracked</p>
             </div>
           </Card>
 
           <!-- Reputation Score Card -->
-          <Card class="flex-1 shadow-sm hover:shadow-md transition-all duration-200 border border-purple-500/10 bg-gradient-to-br from-purple-100/60 to-fuchsia-100/60">
+          <Card
+            class="shadow-sm hover:shadow-md transition-all duration-200 border border-purple-500/10 bg-gradient-to-br from-purple-100/60 to-fuchsia-100/60">
             <div class="p-6">
               <div class="flex items-center justify-between mb-4">
                 <p class="text-sm font-medium text-purple-700">Reputation Score</p>
                 <Award class="h-4 w-4 text-purple-700" />
               </div>
-              <div class="flex flex-col">
-                <div class="relative">
-                  <div v-if="isCalculating || isLoading" class="absolute inset-0 flex items-center justify-center bg-purple-100/75">
-                    <Loader2 class="h-6 w-6 text-purple-700 animate-spin" />
-                  </div>
-                  <div v-else-if="hasError" class="text-red-700 text-sm">
-                    Failed to load score
-                  </div>
-                  <template v-else>
-                    <div class="flex items-baseline gap-2">
-                      <span class="text-3xl font-bold text-purple-700">{{ Math.round(reputationScore) }}</span>
-                      <span class="text-sm font-medium text-purple-700">/100</span>
-                    </div>
-                    <div class="mt-2 h-2 w-full rounded-full bg-purple-200">
-                      <div
-                        class="h-2 rounded-full bg-purple-700"
-                        :style="{ width: `${reputationScore}%` }"
-                      />
-                    </div>
-                  </template>
+              <div class="relative">
+                <div v-if="isCalculating || isLoading"
+                  class="absolute inset-0 flex items-center justify-center bg-purple-100/75">
+                  <Loader2 class="h-6 w-6 text-purple-700 animate-spin" />
                 </div>
+                <div v-else-if="hasError" class="text-red-700 text-sm">Failed to load score</div>
+                <template v-else>
+                  <div class="flex items-baseline gap-2">
+                    <span class="text-3xl font-bold text-purple-700">{{ Math.round(reputationScore) }}</span>
+                    <span class="text-sm font-medium text-purple-700">/100</span>
+                  </div>
+                  <div class="mt-2 h-2 w-full rounded-full bg-purple-200">
+                    <div class="h-2 rounded-full bg-purple-700" :style="{ width: `${reputationScore}%` }" />
+                  </div>
+                </template>
               </div>
             </div>
           </Card>
         </div>
       </div>
 
+
       <!-- Loading State - Skeleton -->
-      <div
-        v-if="analyticsStore.isLoading"
-        class="mb-8 rounded-lg p-6 animate-pulse"
-        :class="{
-          'bg-emerald-50 border border-emerald-200': sentimentChange?.direction === 'decreased',
-          'bg-yellow-50 border border-yellow-200': !sentimentChange || sentimentChange.direction === 'increased'
-        }"
-      >
+      <div v-if="analyticsStore.isLoading" class="mb-8 rounded-lg p-6 animate-pulse" :class="{
+        'bg-emerald-50 border border-emerald-200': sentimentChange?.direction === 'decreased',
+        'bg-yellow-50 border border-yellow-200': !sentimentChange || sentimentChange.direction === 'increased'
+      }">
         <div class="flex space-x-4">
-          <div
-            class="w-12 h-12 rounded-full"
-            :class="{
+          <div class="w-12 h-12 rounded-full" :class="{
+            'bg-emerald-200/70': sentimentChange?.direction === 'decreased',
+            'bg-yellow-200/70': !sentimentChange || sentimentChange.direction === 'increased'
+          }"></div>
+          <div class="flex-1 space-y-4 py-1">
+            <div class="h-4 rounded w-3/4" :class="{
               'bg-emerald-200/70': sentimentChange?.direction === 'decreased',
               'bg-yellow-200/70': !sentimentChange || sentimentChange.direction === 'increased'
-            }"
-          ></div>
-          <div class="flex-1 space-y-4 py-1">
-            <div
-              class="h-4 rounded w-3/4"
-              :class="{
+            }"></div>
+            <div class="space-y-2">
+              <div class="h-4 rounded" :class="{
                 'bg-emerald-200/70': sentimentChange?.direction === 'decreased',
                 'bg-yellow-200/70': !sentimentChange || sentimentChange.direction === 'increased'
-              }"
-            ></div>
-            <div class="space-y-2">
-              <div
-                class="h-4 rounded"
-                :class="{
-                  'bg-emerald-200/70': sentimentChange?.direction === 'decreased',
-                  'bg-yellow-200/70': !sentimentChange || sentimentChange.direction === 'increased'
-                }"
-              ></div>
+              }"></div>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Error State -->
-      <Alert v-else-if="analyticsStore.error" class="mb-8 bg-red-50 border border-red-200 text-red-800 rounded-lg">
-        <AlertTriangle class="h-5 w-5 text-red-800" />
-        <AlertTitle class="text-red-800 font-semibold text-base">Error Loading Data</AlertTitle>
-        <AlertDescription class="text-red-700 text-base">
-          Unable to load sentiment data. Please try again later.
-        </AlertDescription>
+      <Alert v-else-if="analyticsStore.error"
+        class="mb-8 bg-red-50 border border-red-200 text-red-800 rounded-lg flex items-center gap-3">
+        <div
+          class="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-red-100/60 to-rose-100/60 border border-red-500/10">
+          <AlertTriangle class="h-5 w-10 text-red-700" />
+        </div>
+        <div class="flex flex-col">
+          <AlertTitle class="text-red-800 font-semibold text-sm sm:text-md">Error Loading Data</AlertTitle>
+          <AlertDescription class="text-red-700 text-sm sm:text-md text-start">
+            Unable to load sentiment data. Please try again later.
+          </AlertDescription>
+        </div>
       </Alert>
 
       <!-- Sentiment Alert -->
-      <Alert
-        v-else-if="sentimentChange"
-        :variant="sentimentChange.direction === 'increased' ? 'destructive' : 'default'"
-        :class="{
+      <!-- <Card class="mb-8 bg-white shadow-sm hover:shadow-md transition-shadow duration-200"> -->
+      <Alert v-else-if="sentimentChange"
+        :variant="sentimentChange.direction === 'increased' ? 'destructive' : 'default'" :class="{
           'mb-8 shadow-sm hover:shadow-md transition-all duration-200 border border-yellow-500/10 bg-gradient-to-br from-yellow-50/60 to-amber-50/60 rounded-lg flex items-center gap-3': sentimentChange.direction === 'increased',
           'mb-8 shadow-sm hover:shadow-md transition-all duration-200 border border-emerald-500/10 bg-gradient-to-br from-emerald-50/60 to-green-50/60 rounded-lg flex items-center gap-3': sentimentChange.direction === 'decreased'
-        }"
-      >
-        <div class="flex items-center justify-center w-10 h-10 rounded-lg"
-          :class="sentimentChange.direction === 'increased'
-            ? 'bg-gradient-to-br from-yellow-100/60 to-amber-100/60 border border-yellow-500/10'
-            : 'bg-gradient-to-br from-emerald-100/60 to-green-100/60 border border-emerald-500/10'">
-          <component
-            :is="sentimentChange.direction === 'increased' ? AlertTriangle : TrendingUp"
-            :class="[
-              'h-6 w-6',
-              sentimentChange.direction === 'increased' ? 'text-yellow-800' : 'text-green-800'
-            ]"
-          />
+        }">
+        <div class="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-amber-100/60 to-yellow-100/60 border border-amber-500/10" :class="sentimentChange.direction === 'increased'
+          ? 'bg-gradient-to-br from-yellow-100/60 to-amber-100/60 border border-yellow-500/10'
+          : 'bg-gradient-to-br from-emerald-100/60 to-green-100/60 border border-emerald-500/10'">
+          <component :is="sentimentChange.direction === 'increased' ? AlertTriangle : TrendingUp" :class="[
+            'h-5 md:w-5 w-10 text-amber-600',
+            sentimentChange.direction === 'increased' ? 'text-yellow-800' : 'text-green-800'
+          ]" />
         </div>
         <div class="flex flex-col">
-          <AlertTitle
-            class="font-semibold text-base"
-            :class="{
-              'text-yellow-600': sentimentChange.direction === 'increased',
-              'text-emerald-600': sentimentChange.direction === 'decreased'
-            }"
-          >
+          <AlertTitle class="font-semibold text-sm sm:text-md" :class="{
+            'text-yellow-600': sentimentChange.direction === 'increased',
+            'text-emerald-600': sentimentChange.direction === 'decreased'
+          }">
             {{ sentimentChange.direction === 'increased' ? 'Attention Required' : 'Sentiment Improving' }}
           </AlertTitle>
-          <AlertDescription
-            :class="{
-              'text-yellow-600/80 text-base -mt-1': sentimentChange.direction === 'increased',
-              'text-emerald-600/80 text-base -mt-1': sentimentChange.direction === 'decreased'
-            }"
-          >
+          <AlertDescription :class="{
+            'text-yellow-600/80 text-sm sm:text-md -mt-1': sentimentChange.direction === 'increased',
+            'text-emerald-600/80 text-sm sm:text-md -mt-1': sentimentChange.direction === 'decreased'
+          }">
             Negative sentiment {{ sentimentChange.direction }} by {{ sentimentChange.value }}% in the last 7 days.
-            <router-link
-              to="/dashboard/analytics"
-              class="font-medium underline"
-              :class="{
-                'hover:text-yellow-700': sentimentChange.direction === 'increased',
-                'hover:text-emerald-700': sentimentChange.direction === 'decreased'
-              }"
-            >
+            <router-link to="/dashboard/analytics" class="font-medium underline" :class="{
+              'hover:text-yellow-700': sentimentChange.direction === 'increased',
+              'hover:text-emerald-700': sentimentChange.direction === 'decreased'
+            }">
               View details
             </router-link>
           </AlertDescription>
         </div>
       </Alert>
+    <!-- </Card> -->
 
       <!-- No Significant Change -->
-      <Alert v-else class="mb-8 shadow-sm hover:shadow-md transition-all duration-200 border border-amber-500/10 bg-gradient-to-br from-amber-50/60 to-yellow-50/60 rounded-lg flex items-center gap-3">
-        <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-br from-amber-100/60 to-yellow-100/60 border border-amber-500/10">
-          <ArrowRight class="h-5 w-5 text-amber-600" />
+      <!-- <Card class="mb-8 bg-white shadow-sm hover:shadow-md transition-shadow duration-200"> -->
+      <Alert v-else
+        class="mb-8 shadow-sm hover:shadow-md transition-all duration-200 border border-amber-500/10 bg-gradient-to-br from-amber-50/60 to-yellow-50/60 rounded-lg flex items-center gap-3">
+        <div
+          class="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-amber-100/60 to-yellow-100/60 border border-amber-500/10">
+          <ArrowRight class="h-5 md:w-5 w-10 text-amber-600" />
         </div>
         <div class="flex flex-col">
-          <AlertTitle class="text-amber-600 font-semibold text-base">Sentiment Stable</AlertTitle>
-          <AlertDescription class="text-amber-600/80 text-base -mt-1">
+          <AlertTitle class="text-amber-600 font-semibold text-sm sm:text-md">Sentiment Stable</AlertTitle>
+          <AlertDescription class="text-amber-600/80 text-sm sm:text-md -mt-1">
             No significant sentiment changes in the last 7 days.
             <router-link to="/dashboard/analytics" class="font-medium underline hover:text-amber-700">
               View details
@@ -488,34 +470,43 @@ const getKeywordTrend = (keyword: KeywordDataPoint): 'up' | 'down' | 'stable' =>
           </AlertDescription>
         </div>
       </Alert>
+    <!-- </Card> -->
 
       <!-- Recent Activity -->
       <Card class="mb-8 bg-white shadow-sm hover:shadow-md transition-shadow duration-200">
         <CardHeader>
           <div class="flex items-center gap-3">
-            <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-gray-100">
-              <Activity class="w-5 h-5 text-gray-500" />
+            <div class="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 w-10 h-10">
+              <Activity class="md:w-5 h-5 text-gray-500 w-10" />
             </div>
-            <div>
-              <CardTitle class="text-lg font-medium text-gray-700">Recent Activity</CardTitle>
-              <p class="text-base text-gray-500">Latest updates from monitored sources</p>
+            <div class="">
+              <CardTitle class="md:text-lg font-medium text-gray-700 text-md">Recent Activity</CardTitle>
+              <p class="text-sm sm:text-md text-gray-500 ">Latest updates from monitored sources</p>
             </div>
           </div>
         </CardHeader>
         <CardContent>
           <div class="overflow-hidden rounded-lg">
-            <Table class="w-full text-base border-collapse">
-              <TableHeader v-if="analyticsStore.posts.length > 0 || analyticsStore.error" class="bg-gray-50/50">
+            <Table class="w-full text-sm sm:text-md border-collapse">
+              <TableHeader v-if="analyticsStore.posts.length > 0" class="bg-gray-50/50">
                 <TableRow>
-                  <TableHead class="w-[180px] text-left py-4 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider border-y border-gray-200/50">Source</TableHead>
-                  <TableHead class="w-[100px] text-left py-4 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider border-y border-gray-200/50">Date</TableHead>
-                  <TableHead class="w-[120px] text-left py-4 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider border-y border-gray-200/50">Sentiment</TableHead>
-                  <TableHead class="w-[300px] max-w-[300px] text-left py-4 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider border-y border-gray-200/50">Preview</TableHead>
+                  <TableHead
+                    class="w-[180px] text-left py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider border-y border-gray-200/50">
+                    Source</TableHead>
+                  <TableHead
+                    class="w-[100px] text-left py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider border-y border-gray-200/50">
+                    Date</TableHead>
+                  <TableHead
+                    class="w-[120px] text-left py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider border-y border-gray-200/50">
+                    Sentiment</TableHead>
+                  <TableHead
+                    class="w-[300px] max-w-[300px] text-left py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider border-y border-gray-200/50">
+                    Preview</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody class="divide-y divide-gray-200/50">
                 <template v-if="analyticsStore.posts.length === 0">
-                  <TableRow>
+                  <TableRow >
                     <TableCell colspan="4" class="p-0">
                       <div class="flex flex-col items-center justify-center h-64 bg-white rounded-lg p-6 text-center">
                         <div class="w-16 h-16 bg-rose-50 rounded-full flex items-center justify-center mb-6">
@@ -530,6 +521,119 @@ const getKeywordTrend = (keyword: KeywordDataPoint): 'up' | 'down' | 'stable' =>
                       </div>
                     </TableCell>
                   </TableRow>
+                  <!-- <TableRow class="text-sm sm:text-md group hover:bg-gray-50/50 transition-all duration-200">
+                    
+                    <TableCell class="w-[180px] py-4 px-6 border-b border-gray-200/50">
+                      <span class="text-sm sm:text-md text-gray-700">Static Source</span>
+                    </TableCell>
+
+                    
+                    <TableCell class="w-[100px] py-4 px-6 border-b border-gray-200/50">
+                      <span class="text-sm sm:text-md text-gray-600">02/19/2025</span>
+                    </TableCell>
+
+                    
+                    <TableCell class="w-[120px] py-4 px-6 border-b border-gray-200/50">
+                      <span
+                        class="inline-flex items-center justify-center w-20 px-3 py-1 rounded-md text-sm font-medium
+      bg-gradient-to-r from-emerald-500/10 to-emerald-500/5 text-emerald-700 hover:from-emerald-500/20 hover:to-emerald-500/15 transition-colors duration-300">
+                        Positive
+                      </span>
+                    </TableCell>
+
+                    
+                    <TableCell class="w-[300px] max-w-[300px] py-4 px-6 border-b border-gray-200/50">
+                      <div class="max-w-full">
+                        <p class="text-sm sm:text-md text-gray-600 truncate">This is a static post content for display
+                          purposes.</p>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow class="text-sm sm:text-md group hover:bg-gray-50/50 transition-all duration-200">
+                    
+                    <TableCell class="w-[180px] py-4 px-6 border-b border-gray-200/50">
+                      <span class="text-sm sm:text-md text-gray-700">Static Source</span>
+                    </TableCell>
+
+                    
+                    <TableCell class="w-[100px] py-4 px-6 border-b border-gray-200/50">
+                      <span class="text-sm sm:text-md text-gray-600">02/19/2025</span>
+                    </TableCell>
+
+                    
+                    <TableCell class="w-[120px] py-4 px-6 border-b border-gray-200/50">
+                      <span
+                        class="inline-flex items-center justify-center w-20 px-3 py-1 rounded-md text-sm font-medium
+      bg-gradient-to-r from-emerald-500/10 to-emerald-500/5 text-emerald-700 hover:from-emerald-500/20 hover:to-emerald-500/15 transition-colors duration-300">
+                        Positive
+                      </span>
+                    </TableCell>
+
+                    
+                    <TableCell class="w-[300px] max-w-[300px] py-4 px-6 border-b border-gray-200/50">
+                      <div class="max-w-full">
+                        <p class="text-sm sm:text-md text-gray-600 truncate">This is a static post content for display
+                          purposes.</p>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow class="text-sm sm:text-md group hover:bg-gray-50/50 transition-all duration-200">
+                    
+                    <TableCell class="w-[180px] py-4 px-6 border-b border-gray-200/50">
+                      <span class="text-sm sm:text-md text-gray-700">Static Source</span>
+                    </TableCell>
+
+                    
+                    <TableCell class="w-[100px] py-4 px-6 border-b border-gray-200/50">
+                      <span class="text-sm sm:text-md text-gray-600">02/19/2025</span>
+                    </TableCell>
+
+                    
+                    <TableCell class="w-[120px] py-4 px-6 border-b border-gray-200/50">
+                      <span
+                        class="inline-flex items-center justify-center w-20 px-3 py-1 rounded-md text-sm font-medium
+      bg-gradient-to-r from-emerald-500/10 to-emerald-500/5 text-emerald-700 hover:from-emerald-500/20 hover:to-emerald-500/15 transition-colors duration-300">
+                        Positive
+                      </span>
+                    </TableCell>
+
+                    
+                    <TableCell class="w-[300px] max-w-[300px] py-4 px-6 border-b border-gray-200/50">
+                      <div class="max-w-full">
+                        <p class="text-sm sm:text-md text-gray-600 truncate">This is a static post content for display
+                          purposes.</p>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow class="text-sm sm:text-md group hover:bg-gray-50/50 transition-all duration-200">
+                    
+                    <TableCell class="w-[180px] py-4 px-6 border-b border-gray-200/50">
+                      <span class="text-sm sm:text-md text-gray-700">Static Source</span>
+                    </TableCell>
+
+                    
+                    <TableCell class="w-[100px] py-4 px-6 border-b border-gray-200/50">
+                      <span class="text-sm sm:text-md text-gray-600">02/19/2025</span>
+                    </TableCell>
+
+                    
+                    <TableCell class="w-[120px] py-4 px-6 border-b border-gray-200/50">
+                      <span
+                        class="inline-flex items-center justify-center w-20 px-3 py-1 rounded-md text-sm font-medium
+      bg-gradient-to-r from-emerald-500/10 to-emerald-500/5 text-emerald-700 hover:from-emerald-500/20 hover:to-emerald-500/15 transition-colors duration-300">
+                        Positive
+                      </span>
+                    </TableCell>
+
+                    
+                    <TableCell class="w-[300px] max-w-[300px] py-4 px-6 border-b border-gray-200/50">
+                      <div class="max-w-full">
+                        <p class="text-sm sm:text-md text-gray-600 truncate">This is a static post content for display
+                          purposes.</p>
+                      </div>
+                    </TableCell>
+                  </TableRow> -->
+
                 </template>
                 <template v-else-if="analyticsStore.error">
                   <TableRow>
@@ -539,12 +643,14 @@ const getKeywordTrend = (keyword: KeywordDataPoint): 'up' | 'down' | 'stable' =>
                   </TableRow>
                 </template>
                 <template v-else>
-                  <TableRow v-for="post in analyticsStore.posts.slice(0, 5)" :key="post.id" class="group hover:bg-gray-50/50 transition-all duration-200">
+                  <TableRow v-for="post in analyticsStore.posts.slice(0, 5)" :key="post.id"
+                    class="text-sm sm:text-md group hover:bg-gray-50/50 transition-all duration-200">
                     <TableCell class="w-[180px] py-4 px-6 border-b border-gray-200/50">
-                      <span class="text-base text-gray-700">{{ post.source }}</span>
+                      <span class="text-sm sm:text-md text-gray-700">{{ post.source }}</span>
                     </TableCell>
                     <TableCell class="w-[100px] py-4 px-6 border-b border-gray-200/50">
-                      <span class="text-base text-gray-600">{{ new Date(post.post_date).toLocaleDateString() }}</span>
+                      <span class="text-sm sm:text-md text-gray-600">{{ new Date(post.post_date).toLocaleDateString()
+                      }}</span>
                     </TableCell>
                     <TableCell class="w-[120px] py-4 px-6 border-b border-gray-200/50">
                       <span
@@ -553,14 +659,14 @@ const getKeywordTrend = (keyword: KeywordDataPoint): 'up' | 'down' | 'stable' =>
                           'bg-gradient-to-r from-emerald-500/10 to-emerald-500/5 text-emerald-700 hover:from-emerald-500/20 hover:to-emerald-500/15 transition-colors duration-300': post.sentiment === 'positive',
                           'bg-gradient-to-r from-rose-500/10 to-rose-500/5 text-rose-700 hover:from-rose-500/20 hover:to-rose-500/15 transition-colors duration-300': post.sentiment === 'negative',
                           'bg-gradient-to-r from-amber-500/10 to-amber-500/5 text-amber-700 hover:from-amber-500/20 hover:to-amber-500/15 transition-colors duration-300': post.sentiment === 'neutral'
-                        }"
-                      >
-                        {{ post.sentiment ? post.sentiment.charAt(0).toUpperCase() + post.sentiment.slice(1) : 'Unknown' }}
+                        }">
+                        {{ post.sentiment ? post.sentiment.charAt(0).toUpperCase() + post.sentiment.slice(1) : 'Unknown'
+                        }}
                       </span>
                     </TableCell>
                     <TableCell class="w-[300px] max-w-[300px] py-4 px-6 border-b border-gray-200/50">
                       <div class="max-w-full">
-                        <p class="text-base text-gray-600 truncate">{{ post.content }}</p>
+                        <p class="text-sm sm:text-md text-gray-600 truncate">{{ post.content }}</p>
                       </div>
                     </TableCell>
                   </TableRow>
@@ -575,24 +681,32 @@ const getKeywordTrend = (keyword: KeywordDataPoint): 'up' | 'down' | 'stable' =>
       <Card class="bg-white shadow-sm hover:shadow-md transition-shadow duration-200">
         <CardHeader>
           <div class="flex items-center gap-3">
-            <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-gray-100">
-              <BarChart2 class="w-5 h-5 text-gray-500" />
+            <div class="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100">
+              <BarChart2 class="h-5 md:w-5 w-10 text-gray-500" />
             </div>
             <div>
-              <CardTitle class="text-lg font-medium text-gray-700">Top Keywords</CardTitle>
-              <p class="text-base text-gray-500">Most frequently mentioned terms and phrases</p>
+              <CardTitle class="md:text-lg font-medium text-gray-700 text-md">Top Keywords</CardTitle>
+              <p class="text-sm sm:text-md text-gray-500">Most frequently mentioned terms and phrases</p>
             </div>
           </div>
         </CardHeader>
         <CardContent>
           <div class="overflow-hidden rounded-lg">
-            <Table class="w-full text-base border-collapse">
+            <Table class="w-full text-sm sm:text-md border-collapse">
               <TableHeader v-if="analyticsStore.keywordAnalysis.length > 0" class="bg-gray-50/50">
                 <TableRow>
-                  <TableHead class="w-[180px] text-left py-4 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider border-y border-gray-200/50">Keyword</TableHead>
-                  <TableHead class="w-[100px] text-left py-4 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider border-y border-gray-200/50">Mentions</TableHead>
-                  <TableHead class="w-[120px] text-left py-4 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider border-y border-gray-200/50">Sentiment</TableHead>
-                  <TableHead class="w-[100px] text-left py-4 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider border-y border-gray-200/50">Trend</TableHead>
+                  <TableHead
+                    class="w-[180px] text-left py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider border-y border-gray-200/50">
+                    Keyword</TableHead>
+                  <TableHead
+                    class="w-[100px] text-left py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider border-y border-gray-200/50">
+                    Mentions</TableHead>
+                  <TableHead
+                    class="w-[120px] text-left py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider border-y border-gray-200/50">
+                    Sentiment</TableHead>
+                  <TableHead
+                    class="w-[100px] text-left py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider border-y border-gray-200/50">
+                    Trend</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -601,52 +715,175 @@ const getKeywordTrend = (keyword: KeywordDataPoint): 'up' | 'down' | 'stable' =>
                     <TableCell colspan="4" class="p-0">
                       <div class="flex flex-col items-center justify-center h-64 bg-white rounded-lg p-6 text-center">
                         <div class="w-16 h-16 bg-sky-50 rounded-full flex items-center justify-center mb-6">
-                          <TrendingUp class="w-8 h-8 text-sky-400" />
+                          <TrendingUp class="w-8 h-12 text-sky-400" />
                         </div>
-                        <h3 class="text-lg font-medium text-gray-700 mb-2">
-                         No Top Keywords Yet
-                       </h3>
-                       <p class="text-gray-500 text-sm mb-5 max-w-[700px]">
-                         Start tracking keywords to see which terms are trending and gaining traction.
-                       </p>
-                     </div>
-                   </TableCell>
-                 </TableRow>
-               </template>
-               <template v-else>
-                 <TableRow v-for="keyword in analyticsStore.keywordAnalysis.slice(0, 5)" :key="keyword.keyword" class="group hover:bg-gray-50/50 transition-all duration-200">
-                   <TableCell class="w-[180px] py-4 px-6 border-b border-gray-200/50">
-                     <span class="text-base text-gray-700">{{ keyword.keyword }}</span>
-                   </TableCell>
-                   <TableCell class="w-[100px] py-4 px-6 border-b border-gray-200/50">
-                     <span class="text-base text-gray-600">{{ keyword.mentions }}</span>
-                   </TableCell>
-                   <TableCell class="w-[120px] py-4 px-6 border-b border-gray-200/50">
-                     <span
-                       class="inline-flex items-center justify-center w-20 px-3 py-1 rounded-md text-sm font-medium"
-                       :class="getSentimentColor(getDominantSentiment(keyword))"
-                     >
-                       {{ getDominantSentiment(keyword).charAt(0).toUpperCase() + getDominantSentiment(keyword).slice(1) }}
-                     </span>
-                   </TableCell>
-                   <TableCell class="w-[100px] py-4 px-6 border-b border-gray-200/50">
-                     <component
-                       :is="getTrendIcon(getKeywordTrend(keyword))"
-                       class="h-4 w-4"
-                       :class="{
-                         'text-green-500': getKeywordTrend(keyword) === 'up',
-                         'text-red-500': getKeywordTrend(keyword) === 'down',
-                         'text-yellow-500': getKeywordTrend(keyword) === 'stable'
-                       }"
-                     />
-                   </TableCell>
-                 </TableRow>
-               </template>
-             </TableBody>
-           </Table>
-         </div>
-       </CardContent>
-     </Card>
-   </div>
- </div>
+                        <h3 class="md:text-lg font-medium text-gray-700 mb-2 text-md">
+                          No Top Keywords Yet
+                        </h3>
+                        <p class="text-gray-500 text-sm mb-5 max-w-[700px]">
+                          Start tracking keywords to see which terms are trending and gaining traction.
+                        </p>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                  <!-- <TableRow class="group hover:bg-gray-50/50 transition-all duration-200">
+                    
+                    <TableCell class="w-[180px] py-4 px-6 border-b border-gray-200/50">
+                      <span class="text-sm sm:text-md text-gray-700">Static Keyword</span>
+                    </TableCell>
+
+                    
+                    <TableCell class="w-[100px] py-4 px-6 border-b border-gray-200/50">
+                      <span class="text-sm sm:text-md text-gray-600">150</span>
+                    </TableCell>
+
+                    
+                    <TableCell class="w-[120px] py-4 px-6 border-b border-gray-200/50">
+                      <span
+                        class="inline-flex items-center justify-center w-20 px-3 py-1 rounded-md text-sm font-medium
+      bg-gradient-to-r from-emerald-500/10 to-emerald-500/5 text-emerald-700 hover:from-emerald-500/20 hover:to-emerald-500/15 transition-colors duration-300">
+                        Positive
+                      </span>
+                    </TableCell>
+
+                    
+                    <TableCell class="w-[100px] py-4 px-6 border-b border-gray-200/50">
+                      <ArrowUp class="h-4 w-4 text-green-500" />
+                    </TableCell>
+                  </TableRow>
+                  <TableRow class="group hover:bg-gray-50/50 transition-all duration-200">
+                    
+                    <TableCell class="w-[180px] py-4 px-6 border-b border-gray-200/50">
+                      <span class="text-sm sm:text-md text-gray-700">Static Keyword</span>
+                    </TableCell>
+
+                    
+                    <TableCell class="w-[100px] py-4 px-6 border-b border-gray-200/50">
+                      <span class="text-sm sm:text-md text-gray-600">150</span>
+                    </TableCell>
+
+                    
+                    <TableCell class="w-[120px] py-4 px-6 border-b border-gray-200/50">
+                      <span
+                        class="inline-flex items-center justify-center w-20 px-3 py-1 rounded-md text-sm font-medium
+      bg-gradient-to-r from-emerald-500/10 to-emerald-500/5 text-emerald-700 hover:from-emerald-500/20 hover:to-emerald-500/15 transition-colors duration-300">
+                        Positive
+                      </span>
+                    </TableCell>
+
+                    
+                    <TableCell class="w-[100px] py-4 px-6 border-b border-gray-200/50">
+                      <ArrowUp class="h-4 w-4 text-green-500" />
+                    </TableCell>
+                  </TableRow>
+                  <TableRow class="group hover:bg-gray-50/50 transition-all duration-200">
+                    
+                    <TableCell class="w-[180px] py-4 px-6 border-b border-gray-200/50">
+                      <span class="text-sm sm:text-md text-gray-700">Static Keyword</span>
+                    </TableCell>
+
+                    
+                    <TableCell class="w-[100px] py-4 px-6 border-b border-gray-200/50">
+                      <span class="text-sm sm:text-md text-gray-600">150</span>
+                    </TableCell>
+
+                    
+                    <TableCell class="w-[120px] py-4 px-6 border-b border-gray-200/50">
+                      <span
+                        class="inline-flex items-center justify-center w-20 px-3 py-1 rounded-md text-sm font-medium
+      bg-gradient-to-r from-emerald-500/10 to-emerald-500/5 text-emerald-700 hover:from-emerald-500/20 hover:to-emerald-500/15 transition-colors duration-300">
+                        Positive
+                      </span>
+                    </TableCell>
+
+                    
+                    <TableCell class="w-[100px] py-4 px-6 border-b border-gray-200/50">
+                      <ArrowUp class="h-4 w-4 text-green-500" />
+                    </TableCell>
+                  </TableRow>
+                  <TableRow class="group hover:bg-gray-50/50 transition-all duration-200">
+                    
+                    <TableCell class="w-[180px] py-4 px-6 border-b border-gray-200/50">
+                      <span class="text-sm sm:text-md text-gray-700">Static Keyword</span>
+                    </TableCell>
+
+                    
+                    <TableCell class="w-[100px] py-4 px-6 border-b border-gray-200/50">
+                      <span class="text-sm sm:text-md text-gray-600">150</span>
+                    </TableCell>
+
+                    
+                    <TableCell class="w-[120px] py-4 px-6 border-b border-gray-200/50">
+                      <span
+                        class="inline-flex items-center justify-center w-20 px-3 py-1 rounded-md text-sm font-medium
+      bg-gradient-to-r from-emerald-500/10 to-emerald-500/5 text-emerald-700 hover:from-emerald-500/20 hover:to-emerald-500/15 transition-colors duration-300">
+                        Positive
+                      </span>
+                    </TableCell>
+
+                    
+                    <TableCell class="w-[100px] py-4 px-6 border-b border-gray-200/50">
+                      <ArrowUp class="h-4 w-4 text-green-500" />
+                    </TableCell>
+                  </TableRow>
+                  <TableRow class="group hover:bg-gray-50/50 transition-all duration-200">
+                    
+                    <TableCell class="w-[180px] py-4 px-6 border-b border-gray-200/50">
+                      <span class="text-sm sm:text-md text-gray-700">Static Keyword</span>
+                    </TableCell>
+
+                    
+                    <TableCell class="w-[100px] py-4 px-6 border-b border-gray-200/50">
+                      <span class="text-sm sm:text-md text-gray-600">150</span>
+                    </TableCell>
+
+                    
+                    <TableCell class="w-[120px] py-4 px-6 border-b border-gray-200/50">
+                      <span
+                        class="inline-flex items-center justify-center w-20 px-3 py-1 rounded-md text-sm font-medium
+      bg-gradient-to-r from-emerald-500/10 to-emerald-500/5 text-emerald-700 hover:from-emerald-500/20 hover:to-emerald-500/15 transition-colors duration-300">
+                        Positive
+                      </span>
+                    </TableCell>
+
+                    
+                    <TableCell class="w-[100px] py-4 px-6 border-b border-gray-200/50">
+                      <ArrowUp class="h-4 w-4 text-green-500" />
+                    </TableCell>
+                  </TableRow> -->
+
+                </template>
+                <template v-else>
+                  <TableRow v-for="keyword in analyticsStore.keywordAnalysis.slice(0, 5)" :key="keyword.keyword"
+                    class="group hover:bg-gray-50/50 transition-all duration-200">
+                    <TableCell class="w-[180px] py-4 px-6 border-b border-gray-200/50">
+                      <span class="text-sm sm:text-md text-gray-700">{{ keyword.keyword }}</span>
+                    </TableCell>
+                    <TableCell class="w-[100px] py-4 px-6 border-b border-gray-200/50">
+                      <span class="text-sm sm:text-md text-gray-600">{{ keyword.mentions }}</span>
+                    </TableCell>
+                    <TableCell class="w-[120px] py-4 px-6 border-b border-gray-200/50">
+                      <span
+                        class="inline-flex items-center justify-center w-20 px-3 py-1 rounded-md text-sm font-medium"
+                        :class="getSentimentColor(getDominantSentiment(keyword))">
+                        {{ getDominantSentiment(keyword).charAt(0).toUpperCase() +
+                          getDominantSentiment(keyword).slice(1) }}
+                      </span>
+                    </TableCell>
+                    <TableCell class="w-[100px] py-4 px-6 border-b border-gray-200/50">
+                      <component :is="getTrendIcon(getKeywordTrend(keyword))" class="h-4 w-4" :class="{
+                        'text-green-500': getKeywordTrend(keyword) === 'up',
+                        'text-red-500': getKeywordTrend(keyword) === 'down',
+                        'text-yellow-500': getKeywordTrend(keyword) === 'stable'
+                      }" />
+                    </TableCell>
+                  </TableRow>
+                </template>
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  </div>
 </template>
