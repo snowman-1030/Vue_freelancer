@@ -308,7 +308,7 @@ const getKeywordTrend = (keyword: KeywordDataPoint): 'up' | 'down' | 'stable' =>
                 }}%</span>
                 <span class="text-sm font-medium text-blue-700">Positive</span>
               </div>
-              <div v-else class="text-3xl font-bold text-blue-700 animate-pulse">Loading...</div>
+              <div v-else class="text-xl sm:text-3xl font-bold text-blue-700 animate-pulse">Loading...</div>
               <p class="mt-2 text-sm text-blue-700/80">Based on all mentions</p>
             </div>
           </Card>
