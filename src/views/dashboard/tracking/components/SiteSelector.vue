@@ -47,8 +47,8 @@ const sites = ref<Array<{id: string, name: string, icon: string, iconColor: stri
 
 onMounted(async () => {
   try {
-    const response = await axios.get('/logs/available-sources/')
-    response.data = [
+    // const response = await axios.get('/logs/available-sources/')
+    const response = {"data":[
       {
           "id": "rollitup.org",
           "name": "RollitUp",
@@ -151,11 +151,12 @@ onMounted(async () => {
           "icon": "Leaf",
           "iconColor": "text-green-600"
       }
-    ]
+    ]}
     // Sort sites alphabetically by name
     sites.value = response.data.sort((a: {name: string}, b: {name: string}) =>
       a.name.localeCompare(b.name)
     )
+  
   } catch (error) {
     console.error('Failed to fetch available sources:', error)
   }
