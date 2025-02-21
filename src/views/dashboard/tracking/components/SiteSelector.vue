@@ -18,10 +18,10 @@
         >
           <component 
             :is="getSiteIcon(site.id)" 
-            class="h-3 min-3 "
+            class="h-4 min-4 "
             :class="site.iconColor"
           />
-          <p class="text-[clamp(0.7rem,2vw,1rem)] text-center md:text-start">{{ site.name }}</p>
+          <p class="text-[clamp(0.8rem,2vw,1rem)] text-center md:text-start">{{ site.name }}</p>
         </Label>
       </div>
     </div>
