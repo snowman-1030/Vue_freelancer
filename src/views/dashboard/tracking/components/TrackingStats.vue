@@ -1,5 +1,5 @@
 <template>
-  <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8">
+  <div class="grid grid-cols-2 grid-rows-2 gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8">
     <!-- Loading State -->
     <template v-if="store.isLoading">
       <div v-for="i in 4" :key="i" class="transform transition-all duration-200">
